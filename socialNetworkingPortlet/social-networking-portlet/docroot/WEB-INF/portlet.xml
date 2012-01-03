@@ -1,11 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<portlet-app
-	version="2.0"
-	xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
->
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
 	<portlet>
 		<portlet-name>1</portlet-name>
 		<display-name>Summary</display-name>
@@ -192,7 +187,7 @@
 	</portlet>
 	<portlet>
 		<portlet-name>7</portlet-name>
-		<display-name>Meetups</display-name>
+		<display-name>Events</display-name>
 		<portlet-class>com.liferay.socialnetworking.meetups.portlet.MeetupsPortlet</portlet-class>
 		<init-param>
 			<name>view-jsp</name>
@@ -207,9 +202,9 @@
 			<mime-type>text/html</mime-type>
 		</supports>
 		<portlet-info>
-			<title>Meetups</title>
-			<short-title>Meetups</short-title>
-			<keywords>Meetups</keywords>
+			<title>Events</title>
+			<short-title>Events</short-title>
+			<keywords>Events</keywords>
 		</portlet-info>
 		<security-role-ref>
 			<role-name>administrator</role-name>
