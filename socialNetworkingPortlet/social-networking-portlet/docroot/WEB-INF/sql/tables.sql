@@ -12,7 +12,8 @@ create table SN_MeetupsEntry (
 	totalAttendees INTEGER,
 	maxAttendees INTEGER,
 	price DOUBLE,
-	thumbnailId LONG
+	thumbnailId LONG,
+	groupId LONG
 );
 
 create table SN_MeetupsRegistration (

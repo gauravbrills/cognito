@@ -47,10 +47,11 @@
 		<css-class-wrapper>social-networking-portlet-map</css-class-wrapper>
 	</portlet>
 	<portlet>
-		<portlet-name>7</portlet-name>
+		<portlet-name>7</portlet-name>		
 		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
 		<friendly-url-mapping>meetups</friendly-url-mapping>
 		<friendly-url-routes>com/liferay/socialnetworking/meetups/portlet/meetups-friendly-url-routes.xml</friendly-url-routes>
+		<asset-renderer-factory>com.liferay.socialnetworking.meetups.asset.MeetupsEntryAssetRendererFactory</asset-renderer-factory>
 		<header-portlet-css>/meetups/css/main.css</header-portlet-css>
 		<css-class-wrapper>social-networking-portlet-meetups</css-class-wrapper>
 		<add-default-resource>true</add-default-resource>

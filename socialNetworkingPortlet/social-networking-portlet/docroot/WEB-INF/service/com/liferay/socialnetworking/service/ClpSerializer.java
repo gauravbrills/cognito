@@ -156,6 +156,13 @@ public class ClpSerializer {
 
 					method13.invoke(newModel, value13);
 
+					Method method14 = newModelClass.getMethod("setGroupId",
+							new Class[] { Long.TYPE });
+
+					Long value14 = new Long(oldCplModel.getGroupId());
+
+					method14.invoke(newModel, value14);
+
 					return newModel;
 				}
 				catch (Exception e) {
@@ -473,6 +480,13 @@ public class ClpSerializer {
 							(Object[])null);
 
 					newModel.setThumbnailId(value13);
+
+					Method method14 = oldModelClass.getMethod("getGroupId");
+
+					Long value14 = (Long)method14.invoke(oldModel,
+							(Object[])null);
+
+					newModel.setGroupId(value14);
 
 					return newModel;
 				}

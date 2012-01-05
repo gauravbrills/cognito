@@ -30,6 +30,13 @@ import com.liferay.portal.service.UserService;
 import com.liferay.portal.service.persistence.ResourcePersistence;
 import com.liferay.portal.service.persistence.UserPersistence;
 
+import com.liferay.portlet.asset.service.AssetEntryLocalService;
+import com.liferay.portlet.asset.service.AssetEntryService;
+import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
+import com.liferay.portlet.calendar.service.CalEventLocalService;
+import com.liferay.portlet.calendar.service.CalEventService;
+import com.liferay.portlet.calendar.service.persistence.CalEventPersistence;
+
 import com.liferay.socialnetworking.model.MeetupsEntry;
 import com.liferay.socialnetworking.service.MeetupsEntryLocalService;
 import com.liferay.socialnetworking.service.MeetupsRegistrationLocalService;
@@ -503,6 +510,117 @@ public abstract class MeetupsEntryLocalServiceBaseImpl
 	}
 
 	/**
+	 * Gets the asset entry local service.
+	 *
+	 * @return the asset entry local service
+	 */
+	public AssetEntryLocalService getAssetEntryLocalService() {
+		return assetEntryLocalService;
+	}
+
+	/**
+	 * Sets the asset entry local service.
+	 *
+	 * @param assetEntryLocalService the asset entry local service
+	 */
+	public void setAssetEntryLocalService(
+		AssetEntryLocalService assetEntryLocalService) {
+		this.assetEntryLocalService = assetEntryLocalService;
+	}
+
+	/**
+	 * Gets the asset entry remote service.
+	 *
+	 * @return the asset entry remote service
+	 */
+	public AssetEntryService getAssetEntryService() {
+		return assetEntryService;
+	}
+
+	/**
+	 * Sets the asset entry remote service.
+	 *
+	 * @param assetEntryService the asset entry remote service
+	 */
+	public void setAssetEntryService(AssetEntryService assetEntryService) {
+		this.assetEntryService = assetEntryService;
+	}
+
+	/**
+	 * Gets the asset entry persistence.
+	 *
+	 * @return the asset entry persistence
+	 */
+	public AssetEntryPersistence getAssetEntryPersistence() {
+		return assetEntryPersistence;
+	}
+
+	/**
+	 * Sets the asset entry persistence.
+	 *
+	 * @param assetEntryPersistence the asset entry persistence
+	 */
+	public void setAssetEntryPersistence(
+		AssetEntryPersistence assetEntryPersistence) {
+		this.assetEntryPersistence = assetEntryPersistence;
+	}
+
+	/**
+	 * Gets the cal event local service.
+	 *
+	 * @return the cal event local service
+	 */
+	public CalEventLocalService getCalEventLocalService() {
+		return calEventLocalService;
+	}
+
+	/**
+	 * Sets the cal event local service.
+	 *
+	 * @param calEventLocalService the cal event local service
+	 */
+	public void setCalEventLocalService(
+		CalEventLocalService calEventLocalService) {
+		this.calEventLocalService = calEventLocalService;
+	}
+
+	/**
+	 * Gets the cal event remote service.
+	 *
+	 * @return the cal event remote service
+	 */
+	public CalEventService getCalEventService() {
+		return calEventService;
+	}
+
+	/**
+	 * Sets the cal event remote service.
+	 *
+	 * @param calEventService the cal event remote service
+	 */
+	public void setCalEventService(CalEventService calEventService) {
+		this.calEventService = calEventService;
+	}
+
+	/**
+	 * Gets the cal event persistence.
+	 *
+	 * @return the cal event persistence
+	 */
+	public CalEventPersistence getCalEventPersistence() {
+		return calEventPersistence;
+	}
+
+	/**
+	 * Sets the cal event persistence.
+	 *
+	 * @param calEventPersistence the cal event persistence
+	 */
+	public void setCalEventPersistence(CalEventPersistence calEventPersistence) {
+		this.calEventPersistence = calEventPersistence;
+	}
+
+	/**
 	 * Performs an SQL query.
 	 *
 	 * @param sql the sql query to perform
@@ -549,4 +667,16 @@ public abstract class MeetupsEntryLocalServiceBaseImpl
 	protected UserService userService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+	@BeanReference(type = AssetEntryLocalService.class)
+	protected AssetEntryLocalService assetEntryLocalService;
+	@BeanReference(type = AssetEntryService.class)
+	protected AssetEntryService assetEntryService;
+	@BeanReference(type = AssetEntryPersistence.class)
+	protected AssetEntryPersistence assetEntryPersistence;
+	@BeanReference(type = CalEventLocalService.class)
+	protected CalEventLocalService calEventLocalService;
+	@BeanReference(type = CalEventService.class)
+	protected CalEventService calEventService;
+	@BeanReference(type = CalEventPersistence.class)
+	protected CalEventPersistence calEventPersistence;
 }

@@ -395,7 +395,8 @@ public class MeetupsEntryLocalServiceClp implements MeetupsEntryLocalService {
 		int startDateMonth, int startDateDay, int startDateYear,
 		int startDateHour, int startDateMinute, int endDateMonth,
 		int endDateDay, int endDateYear, int endDateHour, int endDateMinute,
-		int totalAttendees, int maxAttendees, double price, byte[] thumbnail)
+		int totalAttendees, int maxAttendees, double price, byte[] thumbnail,
+		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
@@ -404,7 +405,7 @@ public class MeetupsEntryLocalServiceClp implements MeetupsEntryLocalService {
 				userId, title, description, startDateMonth, startDateDay,
 				startDateYear, startDateHour, startDateMinute, endDateMonth,
 				endDateDay, endDateYear, endDateHour, endDateMinute,
-				totalAttendees, maxAttendees, price, thumbnail);
+				totalAttendees, maxAttendees, price, thumbnail, serviceContext);
 
 		try {
 			returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -491,7 +492,8 @@ public class MeetupsEntryLocalServiceClp implements MeetupsEntryLocalService {
 		int startDateYear, int startDateHour, int startDateMinute,
 		int endDateMonth, int endDateDay, int endDateYear, int endDateHour,
 		int endDateMinute, int totalAttendees, int maxAttendees, double price,
-		byte[] thumbnail)
+		byte[] thumbnail,
+		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
@@ -500,7 +502,8 @@ public class MeetupsEntryLocalServiceClp implements MeetupsEntryLocalService {
 				userId, meetupsEntryId, title, description, startDateMonth,
 				startDateDay, startDateYear, startDateHour, startDateMinute,
 				endDateMonth, endDateDay, endDateYear, endDateHour,
-				endDateMinute, totalAttendees, maxAttendees, price, thumbnail);
+				endDateMinute, totalAttendees, maxAttendees, price, thumbnail,
+				serviceContext);
 
 		try {
 			returnObj = _classLoaderProxy.invoke(methodHandler);
@@ -524,6 +527,36 @@ public class MeetupsEntryLocalServiceClp implements MeetupsEntryLocalService {
 		}
 
 		return (com.liferay.socialnetworking.model.MeetupsEntry)ClpSerializer.translateOutput(returnObj);
+	}
+
+	public void updateAsset(long userId,
+		com.liferay.socialnetworking.model.MeetupsEntry meetupsEntry,
+		long[] assetCategoryIds, java.lang.String[] assetTagNames)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		MethodHandler methodHandler = new MethodHandler(_updateAssetMethodKey17,
+				userId, meetupsEntry, assetCategoryIds, assetTagNames);
+
+		try {
+			_classLoaderProxy.invoke(methodHandler);
+		}
+		catch (Throwable t) {
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
 	}
 
 	public ClassLoaderProxy getClassLoaderProxy() {
@@ -570,7 +603,8 @@ public class MeetupsEntryLocalServiceClp implements MeetupsEntryLocalService {
 			"addMeetupsEntry", long.class, java.lang.String.class,
 			java.lang.String.class, int.class, int.class, int.class, int.class,
 			int.class, int.class, int.class, int.class, int.class, int.class,
-			int.class, int.class, double.class, byte[].class);
+			int.class, int.class, double.class, byte[].class,
+			com.liferay.portal.service.ServiceContext.class);
 	private MethodKey _getMeetupsEntriesByCompanyMethodKey14 = new MethodKey(_classLoaderProxy.getClassName(),
 			"getMeetupsEntriesByCompany", long.class);
 	private MethodKey _getMeetupsEntriesByUserMethodKey15 = new MethodKey(_classLoaderProxy.getClassName(),
@@ -580,5 +614,10 @@ public class MeetupsEntryLocalServiceClp implements MeetupsEntryLocalService {
 			java.lang.String.class, java.lang.String.class, int.class,
 			int.class, int.class, int.class, int.class, int.class, int.class,
 			int.class, int.class, int.class, int.class, int.class,
-			double.class, byte[].class);
+			double.class, byte[].class,
+			com.liferay.portal.service.ServiceContext.class);
+	private MethodKey _updateAssetMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
+			"updateAsset", long.class,
+			com.liferay.socialnetworking.model.MeetupsEntry.class,
+			long[].class, java.lang.String[].class);
 }

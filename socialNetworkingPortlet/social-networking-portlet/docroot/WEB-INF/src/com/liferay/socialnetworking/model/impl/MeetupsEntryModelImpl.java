@@ -72,9 +72,10 @@ public class MeetupsEntryModelImpl extends BaseModelImpl<MeetupsEntry>
 			{ "totalAttendees", new Integer(Types.INTEGER) },
 			{ "maxAttendees", new Integer(Types.INTEGER) },
 			{ "price", new Integer(Types.DOUBLE) },
-			{ "thumbnailId", new Integer(Types.BIGINT) }
+			{ "thumbnailId", new Integer(Types.BIGINT) },
+			{ "groupId", new Integer(Types.BIGINT) }
 		};
-	public static final String TABLE_SQL_CREATE = "create table SN_MeetupsEntry (meetupsEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,title VARCHAR(75) null,description STRING null,startDate DATE null,endDate DATE null,totalAttendees INTEGER,maxAttendees INTEGER,price DOUBLE,thumbnailId LONG)";
+	public static final String TABLE_SQL_CREATE = "create table SN_MeetupsEntry (meetupsEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,title VARCHAR(75) null,description STRING null,startDate DATE null,endDate DATE null,totalAttendees INTEGER,maxAttendees INTEGER,price DOUBLE,thumbnailId LONG,groupId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table SN_MeetupsEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY meetupsEntry.startDate DESC";
 	public static final String ORDER_BY_SQL = " ORDER BY SN_MeetupsEntry.startDate DESC";
@@ -240,6 +241,14 @@ public class MeetupsEntryModelImpl extends BaseModelImpl<MeetupsEntry>
 		_thumbnailId = thumbnailId;
 	}
 
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
+	}
+
 	public MeetupsEntry toEscapedModel() {
 		if (isEscapedModel()) {
 			return (MeetupsEntry)this;
@@ -295,6 +304,8 @@ public class MeetupsEntryModelImpl extends BaseModelImpl<MeetupsEntry>
 
 		meetupsEntryImpl.setThumbnailId(getThumbnailId());
 
+		meetupsEntryImpl.setGroupId(getGroupId());
+
 		return meetupsEntryImpl;
 	}
 
@@ -341,7 +352,7 @@ public class MeetupsEntryModelImpl extends BaseModelImpl<MeetupsEntry>
 	}
 
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("{meetupsEntryId=");
 		sb.append(getMeetupsEntryId());
@@ -371,13 +382,15 @@ public class MeetupsEntryModelImpl extends BaseModelImpl<MeetupsEntry>
 		sb.append(getPrice());
 		sb.append(", thumbnailId=");
 		sb.append(getThumbnailId());
+		sb.append(", groupId=");
+		sb.append(getGroupId());
 		sb.append("}");
 
 		return sb.toString();
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
+		StringBundler sb = new StringBundler(49);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.socialnetworking.model.MeetupsEntry");
@@ -439,6 +452,10 @@ public class MeetupsEntryModelImpl extends BaseModelImpl<MeetupsEntry>
 			"<column><column-name>thumbnailId</column-name><column-value><![CDATA[");
 		sb.append(getThumbnailId());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>groupId</column-name><column-value><![CDATA[");
+		sb.append(getGroupId());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -460,5 +477,6 @@ public class MeetupsEntryModelImpl extends BaseModelImpl<MeetupsEntry>
 	private int _maxAttendees;
 	private double _price;
 	private long _thumbnailId;
+	private long _groupId;
 	private transient ExpandoBridge _expandoBridge;
 }

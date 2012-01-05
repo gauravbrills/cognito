@@ -39,6 +39,9 @@ import com.liferay.portal.service.persistence.ResourcePersistence;
 import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
+import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
+import com.liferay.portlet.calendar.service.persistence.CalEventPersistence;
+
 import com.liferay.socialnetworking.NoSuchMeetupsEntryException;
 import com.liferay.socialnetworking.model.MeetupsEntry;
 import com.liferay.socialnetworking.model.impl.MeetupsEntryImpl;
@@ -302,6 +305,7 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 		meetupsEntryImpl.setMaxAttendees(meetupsEntry.getMaxAttendees());
 		meetupsEntryImpl.setPrice(meetupsEntry.getPrice());
 		meetupsEntryImpl.setThumbnailId(meetupsEntry.getThumbnailId());
+		meetupsEntryImpl.setGroupId(meetupsEntry.getGroupId());
 
 		return meetupsEntryImpl;
 	}
@@ -1402,6 +1406,10 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 	protected ResourcePersistence resourcePersistence;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+	@BeanReference(type = AssetEntryPersistence.class)
+	protected AssetEntryPersistence assetEntryPersistence;
+	@BeanReference(type = CalEventPersistence.class)
+	protected CalEventPersistence calEventPersistence;
 	private static final String _SQL_SELECT_MEETUPSENTRY = "SELECT meetupsEntry FROM MeetupsEntry meetupsEntry";
 	private static final String _SQL_SELECT_MEETUPSENTRY_WHERE = "SELECT meetupsEntry FROM MeetupsEntry meetupsEntry WHERE ";
 	private static final String _SQL_COUNT_MEETUPSENTRY = "SELECT COUNT(meetupsEntry) FROM MeetupsEntry meetupsEntry";

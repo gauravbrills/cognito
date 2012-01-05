@@ -232,14 +232,15 @@ public class MeetupsEntryLocalServiceUtil {
 		int startDateMonth, int startDateDay, int startDateYear,
 		int startDateHour, int startDateMinute, int endDateMonth,
 		int endDateDay, int endDateYear, int endDateHour, int endDateMinute,
-		int totalAttendees, int maxAttendees, double price, byte[] thumbnail)
+		int totalAttendees, int maxAttendees, double price, byte[] thumbnail,
+		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return getService()
 				   .addMeetupsEntry(userId, title, description, startDateMonth,
 			startDateDay, startDateYear, startDateHour, startDateMinute,
 			endDateMonth, endDateDay, endDateYear, endDateHour, endDateMinute,
-			totalAttendees, maxAttendees, price, thumbnail);
+			totalAttendees, maxAttendees, price, thumbnail, serviceContext);
 	}
 
 	public static java.util.List<com.liferay.socialnetworking.model.MeetupsEntry> getMeetupsEntriesByCompany(
@@ -259,7 +260,8 @@ public class MeetupsEntryLocalServiceUtil {
 		int startDateYear, int startDateHour, int startDateMinute,
 		int endDateMonth, int endDateDay, int endDateYear, int endDateHour,
 		int endDateMinute, int totalAttendees, int maxAttendees, double price,
-		byte[] thumbnail)
+		byte[] thumbnail,
+		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return getService()
@@ -267,7 +269,16 @@ public class MeetupsEntryLocalServiceUtil {
 			description, startDateMonth, startDateDay, startDateYear,
 			startDateHour, startDateMinute, endDateMonth, endDateDay,
 			endDateYear, endDateHour, endDateMinute, totalAttendees,
-			maxAttendees, price, thumbnail);
+			maxAttendees, price, thumbnail, serviceContext);
+	}
+
+	public static void updateAsset(long userId,
+		com.liferay.socialnetworking.model.MeetupsEntry meetupsEntry,
+		long[] assetCategoryIds, java.lang.String[] assetTagNames)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService()
+			.updateAsset(userId, meetupsEntry, assetCategoryIds, assetTagNames);
 	}
 
 	public static void clearService() {

@@ -157,6 +157,14 @@ public class MeetupsEntryWrapper implements MeetupsEntry {
 		_meetupsEntry.setThumbnailId(thumbnailId);
 	}
 
+	public long getGroupId() {
+		return _meetupsEntry.getGroupId();
+	}
+
+	public void setGroupId(long groupId) {
+		_meetupsEntry.setGroupId(groupId);
+	}
+
 	public com.liferay.socialnetworking.model.MeetupsEntry toEscapedModel() {
 		return _meetupsEntry.toEscapedModel();
 	}

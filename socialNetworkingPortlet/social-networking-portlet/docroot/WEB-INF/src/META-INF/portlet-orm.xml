@@ -31,6 +31,7 @@
 			<basic name="maxAttendees" />
 			<basic name="price" />
 			<basic name="thumbnailId" />
+			<basic name="groupId" />
 			<transient name="primaryKey" />
 			<transient name="userUuid" />
 		</attributes>

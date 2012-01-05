@@ -20,30 +20,15 @@ import java.util.Calendar;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
-import com.liferay.portlet.calendar.model.CalEvent;
-import com.liferay.portlet.calendar.service.CalEventLocalServiceUtil;
-import com.liferay.portlet.expando.DuplicateColumnNameException;
-import com.liferay.portlet.expando.NoSuchTableException;
-import com.liferay.portlet.expando.model.ExpandoColumn;
-import com.liferay.portlet.expando.model.ExpandoColumnConstants;
-import com.liferay.portlet.expando.model.ExpandoTable;
-import com.liferay.portlet.expando.model.ExpandoValue;
-import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import com.liferay.socialnetworking.model.MeetupsEntry;
 import com.liferay.socialnetworking.service.MeetupsEntryLocalServiceUtil;
 import com.liferay.socialnetworking.service.MeetupsRegistrationLocalServiceUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
@@ -71,18 +56,7 @@ public class MeetupsPortlet extends MVCPortlet {
 
 		long meetupsEntryId = ParamUtil
 				.getLong(actionRequest, "meetupsEntryId");
-		// Get expando details
-		ExpandoTable table = getExpandoTable(MeetupsEntryLocalServiceUtil
-				.getMeetupsEntry(meetupsEntryId));
-		ExpandoColumn column = getOrAddExpandoColumn(table, "calEventID",
-				ExpandoColumnConstants.LONG);
-		// Get event id
-		ExpandoValue value = ExpandoValueLocalServiceUtil.getValue(
-				table.getTableId(), column.getColumnId(), meetupsEntryId);
-		// Delete Calendar Event
-		CalEventLocalServiceUtil.deleteEvent(Long.parseLong(value.getData()));
-		// Delete Expando Data
-		ExpandoValueLocalServiceUtil.deleteExpandoValue(value.getValueId());
+
 		// Delete Meetups Entry
 		MeetupsEntryLocalServiceUtil.deleteMeetupsEntry(meetupsEntryId);
 	}
@@ -93,6 +67,8 @@ public class MeetupsPortlet extends MVCPortlet {
 		UploadPortletRequest uploadRequest = PortalUtil
 				.getUploadPortletRequest(actionRequest);
 
+		ServiceContext serviceContext = ServiceContextFactory
+				.getInstance(uploadRequest);
 		ThemeDisplay themeDisplay = (ThemeDisplay) uploadRequest
 				.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -101,9 +77,16 @@ public class MeetupsPortlet extends MVCPortlet {
 
 		// get selected tags
 		String[] assetTagNames = null;
+
 		String assetTagCSV = ParamUtil
 				.getString(uploadRequest, "assetTagNames");
+
 		assetTagNames = assetTagCSV != null ? assetTagCSV.split(",") : null;
+
+		// set asset tag names in service context
+		serviceContext.setAssetTagNames((null != assetTagCSV && !assetTagCSV
+				.equals("")) ? assetTagNames : null);
+
 		if (!permissionChecker.isCompanyAdmin()) {
 			return;
 		}
@@ -151,115 +134,22 @@ public class MeetupsPortlet extends MVCPortlet {
 		byte[] bytes = FileUtil.getBytes(file);
 
 		if (meetupsEntryId <= 0) {
-			// Add to Calendar
-			CalEvent event = CalEventLocalServiceUtil.addEvent(
-					themeDisplay.getUserId(), title, description,
-					startDateMonth, startDateDay, startDateYear, startDateHour,
-					startDateMinute, endDateMonth, endDateDay, endDateYear,
-					endDateHour, endDateMinute, true, true, "Training", false,
-					null, 0, 0, 0,
-					ServiceContextFactory.getInstance(uploadRequest));
 			// Add Meetups Entry
-			MeetupsEntry entry = MeetupsEntryLocalServiceUtil.addMeetupsEntry(
+			MeetupsEntryLocalServiceUtil.addMeetupsEntry(
 					themeDisplay.getUserId(), title, description,
 					startDateMonth, startDateDay, startDateYear, startDateHour,
 					startDateMinute, endDateMonth, endDateDay, endDateYear,
 					endDateHour, endDateMinute, totalAttendees, maxAttendees,
-					price, bytes);
-			// Add Tags if they exist
-			if (null != assetTagCSV && !assetTagCSV.equals(""))
-				AssetEntryLocalServiceUtil.updateEntry(
-						themeDisplay.getUserId(), 0,
-						MeetupsEntry.class.getName(), entry.getPrimaryKey(),
-						entry.getUserUuid(), null, assetTagNames, true, null,
-						null, entry.getStartDate(), null,
-						ContentTypes.TEXT_HTML, entry.getTitle(), null,
-						"meetupTags", null, 0, 0, null, false);
-			// Set ExpandoAttributes
-			ExpandoTable table = getExpandoTable(entry);
-			ExpandoColumn column = getOrAddExpandoColumn(table, "calEventID",
-					ExpandoColumnConstants.LONG);
-			// Add eventId to expando column calEventID
-			ExpandoValueLocalServiceUtil.addValue(table.getClassNameId(),
-					table.getTableId(), column.getColumnId(),
-					entry.getMeetupsEntryId(),
-					Long.toString(event.getEventId()));
+					price, bytes, serviceContext);
+
 		} else {
-			MeetupsEntry entry = MeetupsEntryLocalServiceUtil
-					.updateMeetupsEntry(themeDisplay.getUserId(),
-							meetupsEntryId, title, description, startDateMonth,
-							startDateDay, startDateYear, startDateHour,
-							startDateMinute, endDateMonth, endDateDay,
-							endDateYear, endDateHour, endDateMinute,
-							totalAttendees, maxAttendees, price, bytes);
-			// Add Tags if they exist
-			if (null != assetTagCSV && !assetTagCSV.equals(""))
-				AssetEntryLocalServiceUtil.updateEntry(
-						themeDisplay.getUserId(), 0,
-						MeetupsEntry.class.getName(), entry.getPrimaryKey(),
-						entry.getUserUuid(), null, assetTagNames, true, null,
-						null, entry.getStartDate(), null,
-						ContentTypes.TEXT_HTML, entry.getTitle(), null,
-						"meetupTags", null, 0, 0, null, false);
-			// Get expando details
-			ExpandoTable table = getExpandoTable(entry);
-			ExpandoColumn column = getOrAddExpandoColumn(table, "calEventID",
-					ExpandoColumnConstants.LONG);
-			// Get event id
-			ExpandoValue value = ExpandoValueLocalServiceUtil.getValue(
-					table.getTableId(), column.getColumnId(), meetupsEntryId);
-
-			CalEventLocalServiceUtil.updateEvent(themeDisplay.getUserId(),
-					Long.parseLong(value.getData()), entry.getTitle(),
-					entry.getDescription(), startDateMonth, startDateDay,
-					startDateYear, startDateHour, startDateMinute,
-					endDateMonth, endDateDay, endDateYear, endDateHour,
-					endDateMinute, true, true, "Training", false, null, 0, 0,
-					0, ServiceContextFactory.getInstance(uploadRequest));
-
+			MeetupsEntryLocalServiceUtil.updateMeetupsEntry(
+					themeDisplay.getUserId(), meetupsEntryId, title,
+					description, startDateMonth, startDateDay, startDateYear,
+					startDateHour, startDateMinute, endDateMonth, endDateDay,
+					endDateYear, endDateHour, endDateMinute, totalAttendees,
+					maxAttendees, price, bytes, serviceContext);
 		}
-	}
-
-	/**
-	 * @param table
-	 * @param columnName
-	 * @param colType
-	 * @return
-	 * @throws PortalException
-	 * @throws SystemException
-	 */
-	private ExpandoColumn getOrAddExpandoColumn(ExpandoTable table,
-			String columnName, int colType) throws PortalException,
-			SystemException {
-		ExpandoColumn column = null;
-		try {
-			column = ExpandoColumnLocalServiceUtil.addColumn(
-					table.getTableId(), columnName, colType);
-		} catch (DuplicateColumnNameException dcne) {
-			column = ExpandoColumnLocalServiceUtil.getColumn(
-					table.getTableId(), columnName);
-		}
-		return column;
-
-	}
-
-	/**
-	 * @param entry
-	 * @return
-	 * @throws PortalException
-	 * @throws SystemException
-	 */
-	private ExpandoTable getExpandoTable(MeetupsEntry entry)
-			throws PortalException, SystemException {
-		ExpandoTable table = null;
-		try {
-			table = ExpandoTableLocalServiceUtil.getDefaultTable(
-					entry.getCompanyId(), MeetupsEntry.class.getName());
-		} catch (NoSuchTableException nste) {
-			table = ExpandoTableLocalServiceUtil.addDefaultTable(
-					entry.getCompanyId(), MeetupsEntry.class.getName());
-		}
-		return table;
 	}
 
 	public void updateMeetupsRegistration(ActionRequest actionRequest,

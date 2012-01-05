@@ -167,6 +167,14 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 		_thumbnailId = thumbnailId;
 	}
 
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
+	}
+
 	public MeetupsEntry toEscapedModel() {
 		if (isEscapedModel()) {
 			return this;
@@ -195,6 +203,7 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 		clone.setMaxAttendees(getMaxAttendees());
 		clone.setPrice(getPrice());
 		clone.setThumbnailId(getThumbnailId());
+		clone.setGroupId(getGroupId());
 
 		return clone;
 	}
@@ -242,7 +251,7 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 	}
 
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("{meetupsEntryId=");
 		sb.append(getMeetupsEntryId());
@@ -272,13 +281,15 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 		sb.append(getPrice());
 		sb.append(", thumbnailId=");
 		sb.append(getThumbnailId());
+		sb.append(", groupId=");
+		sb.append(getGroupId());
 		sb.append("}");
 
 		return sb.toString();
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
+		StringBundler sb = new StringBundler(49);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.socialnetworking.model.MeetupsEntry");
@@ -340,6 +351,10 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 			"<column><column-name>thumbnailId</column-name><column-value><![CDATA[");
 		sb.append(getThumbnailId());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>groupId</column-name><column-value><![CDATA[");
+		sb.append(getGroupId());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -361,4 +376,5 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 	private int _maxAttendees;
 	private double _price;
 	private long _thumbnailId;
+	private long _groupId;
 }

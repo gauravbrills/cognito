@@ -23,6 +23,7 @@
 		<property name="maxAttendees" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="price" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		<property name="thumbnailId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.liferay.socialnetworking.model.impl.MeetupsRegistrationImpl" table="SN_MeetupsRegistration">
 		<cache usage="read-write" />

@@ -272,6 +272,20 @@ public interface MeetupsEntryModel extends BaseModel<MeetupsEntry> {
 	public void setThumbnailId(long thumbnailId);
 
 	/**
+	 * Gets the group id of this meetups entry.
+	 *
+	 * @return the group id of this meetups entry
+	 */
+	public long getGroupId();
+
+	/**
+	 * Sets the group id of this meetups entry.
+	 *
+	 * @param groupId the group id of this meetups entry
+	 */
+	public void setGroupId(long groupId);
+
+	/**
 	 * Gets a copy of this meetups entry as an escaped model instance by wrapping it with an {@link com.liferay.portal.kernel.bean.AutoEscapeBeanHandler}.
 	 *
 	 * @return the escaped model instance
