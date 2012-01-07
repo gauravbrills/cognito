@@ -189,7 +189,7 @@
 	</portlet>
 	<portlet>
 		<portlet-name>7</portlet-name>
-		<display-name>Events</display-name>
+		<display-name>Cognito Events</display-name>
 		<portlet-class>com.liferay.socialnetworking.meetups.portlet.MeetupsPortlet</portlet-class>
 		<init-param>
 			<name>view-jsp</name>
@@ -204,9 +204,9 @@
 			<mime-type>text/html</mime-type>
 		</supports>
 		<portlet-info>
-			<title>Events</title>
-			<short-title>Events</short-title>
-			<keywords>Events</keywords>
+			<title>Cognito Events</title>
+			<short-title>Cognito Events</short-title>
+			<keywords>Cognito Events</keywords>
 		</portlet-info>
 		<security-role-ref>
 			<role-name>administrator</role-name>

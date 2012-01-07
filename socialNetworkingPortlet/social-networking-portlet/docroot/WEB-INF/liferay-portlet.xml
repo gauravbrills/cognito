@@ -47,7 +47,9 @@
 		<css-class-wrapper>social-networking-portlet-map</css-class-wrapper>
 	</portlet>
 	<portlet>
-		<portlet-name>7</portlet-name>		
+		<portlet-name>7</portlet-name>
+		<indexer-class>com.liferay.socialnetworking.meetups.cognito.util.CognitoEventIndexer</indexer-class>
+		<open-search-class>com.liferay.socialnetworking.meetups.cognito.util.MeetupsOpenSearchImpl</open-search-class>
 		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
 		<friendly-url-mapping>meetups</friendly-url-mapping>
 		<friendly-url-routes>com/liferay/socialnetworking/meetups/portlet/meetups-friendly-url-routes.xml</friendly-url-routes>

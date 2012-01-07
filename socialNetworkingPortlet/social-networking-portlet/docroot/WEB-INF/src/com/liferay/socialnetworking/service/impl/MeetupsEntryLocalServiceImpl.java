@@ -19,6 +19,8 @@ import java.util.List;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ImageLocalServiceUtil;
@@ -121,6 +123,12 @@ public class MeetupsEntryLocalServiceImpl extends
 		updateAsset(userId, meetupsEntry, serviceContext.getAssetCategoryIds(),
 				serviceContext.getAssetTagNames());
 
+		// Indexer
+
+		Indexer indexer = IndexerRegistryUtil.getIndexer(MeetupsEntry.class);
+
+		indexer.reindex(meetupsEntry);
+
 		return meetupsEntry;
 	}
 
@@ -154,6 +162,12 @@ public class MeetupsEntryLocalServiceImpl extends
 		// Asset
 		assetEntryLocalService.deleteEntry(MeetupsEntry.class.getName(),
 				meetupsEntryId);
+
+		// Indexer
+
+		Indexer indexer = IndexerRegistryUtil.getIndexer(MeetupsEntry.class);
+
+		indexer.delete(meetupsEntry);
 	}
 
 	public List<MeetupsEntry> getMeetupsEntriesByCompany(long companyId)
@@ -232,6 +246,12 @@ public class MeetupsEntryLocalServiceImpl extends
 		// Asset
 		updateAsset(userId, meetupsEntry, serviceContext.getAssetCategoryIds(),
 				serviceContext.getAssetTagNames());
+
+		// Indexer
+
+		Indexer indexer = IndexerRegistryUtil.getIndexer(MeetupsEntry.class);
+
+		indexer.reindex(meetupsEntry);
 
 		return meetupsEntry;
 	}

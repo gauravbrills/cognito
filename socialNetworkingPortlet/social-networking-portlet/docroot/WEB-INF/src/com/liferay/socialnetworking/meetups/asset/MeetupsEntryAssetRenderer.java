@@ -17,16 +17,15 @@ import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.security.permission.ActionKeys;
-import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.asset.model.BaseAssetRenderer;
+import com.liferay.socialnetworking.meetups.cognito.util.CognitoEventsUtil;
 import com.liferay.socialnetworking.meetups.util.WebKeys;
 import com.liferay.socialnetworking.model.MeetupsEntry;
 
@@ -54,14 +53,24 @@ public class MeetupsEntryAssetRenderer extends BaseAssetRenderer {
 
 	public PortletURL getURLEdit(LiferayPortletRequest liferayPortletRequest,
 			LiferayPortletResponse liferayPortletResponse) {
-
-		PortletURL editPortletURL = liferayPortletResponse
-				.createRenderURL(PortletKeys.BLOGS);
-
-		editPortletURL.setParameter("struts_action", "/meetups/edit_entry");
-		editPortletURL.setParameter("entryId",
-				String.valueOf(_entry.getMeetupsEntryId()));
-
+		PortletURL editPortletURL = null;
+		ThemeDisplay themeDisplay = (ThemeDisplay) liferayPortletRequest
+				.getAttribute(WebKeys.THEME_DISPLAY);
+		// Get url for add meetups entry
+		try {
+			editPortletURL = CognitoEventsUtil
+					.getMeetupsPortletUrl(themeDisplay,
+							liferayPortletRequest.getHttpServletRequest());
+			editPortletURL.setParameter("jspPage", "/meetups/edit_entry");
+			editPortletURL.setParameter("meetupsEntryId",
+					String.valueOf(_entry.getMeetupsEntryId()));
+		} catch (PortalException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return editPortletURL;
 	}
 
@@ -137,6 +146,5 @@ public class MeetupsEntryAssetRenderer extends BaseAssetRenderer {
 		// TODO Auto-generated method stub
 		return 10165;
 	}
-
 
 }

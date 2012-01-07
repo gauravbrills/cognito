@@ -25,4 +25,6 @@ public interface MeetupsConstants {
 
 	public static final int STATUS_YES = 1;
 
+	public static final String MEETUPS_PORTLET_PPID = "7_WAR_socialnetworkingportlet";
+
 }

@@ -1,16 +1,3 @@
-/**
- * Copyright (c) 2000-2011 Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- */
 package com.liferay.socialnetworking.meetups.asset;
 
 import javax.portlet.PortletURL;
@@ -19,19 +6,17 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.asset.model.AssetRenderer;
 import com.liferay.portlet.asset.model.BaseAssetRendererFactory;
+import com.liferay.socialnetworking.meetups.cognito.util.CognitoEventsUtil;
 import com.liferay.socialnetworking.meetups.util.WebKeys;
 import com.liferay.socialnetworking.model.MeetupsEntry;
 import com.liferay.socialnetworking.service.MeetupsEntryLocalServiceUtil;
 
 /**
- * @author Jorge Ferrer
- * @author Juan Fernández
- * @author Raymond Augé
+ * @author Gaurav
+ * 
  */
 public class MeetupsEntryAssetRendererFactory extends BaseAssetRendererFactory {
 
@@ -39,6 +24,13 @@ public class MeetupsEntryAssetRendererFactory extends BaseAssetRendererFactory {
 
 	public static final String TYPE = "meetups";
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.liferay.portlet.asset.model.AssetRendererFactory#getAssetRenderer
+	 * (long, int)
+	 */
 	public AssetRenderer getAssetRenderer(long classPK, int type)
 			throws PortalException, SystemException {
 
@@ -48,33 +40,53 @@ public class MeetupsEntryAssetRendererFactory extends BaseAssetRendererFactory {
 		return new MeetupsEntryAssetRenderer(entry);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.liferay.portlet.asset.model.AssetRendererFactory#getClassName()
+	 */
 	public String getClassName() {
 		return CLASS_NAME;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.liferay.portlet.asset.model.AssetRendererFactory#getType()
+	 */
 	public String getType() {
 		return TYPE;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.liferay.portlet.asset.model.BaseAssetRendererFactory#getURLAdd(com
+	 * .liferay.portal.kernel.portlet.LiferayPortletRequest,
+	 * com.liferay.portal.kernel.portlet.LiferayPortletResponse)
+	 */
 	public PortletURL getURLAdd(LiferayPortletRequest liferayPortletRequest,
 			LiferayPortletResponse liferayPortletResponse) {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay) liferayPortletRequest
 				.getAttribute(WebKeys.THEME_DISPLAY);
 
-		PortletURL addAssetURL = null;
-		/*
-		 * if (BlogsPermission.contains(themeDisplay.getPermissionChecker(),
-		 * themeDisplay.getScopeGroupId(), ActionKeys.ADD_ENTRY)) {
-		 */
-		addAssetURL = liferayPortletResponse.createRenderURL();
-		// addMeetupsEntryURL.setWindowState(WindowState.MAXIMIZED);
+		PortletURL portletURL = null;
+		// Get url for add meetups entry
+		try {
+			portletURL = CognitoEventsUtil.getMeetupsPortletUrl(themeDisplay,
+					liferayPortletRequest.getHttpServletRequest());
+			portletURL.setParameter("jspPage", "/meetups/edit_entry.jsp");
 
-		addAssetURL.setParameter("jspPage", "/meetups/edit_entry.jsp");
-		//addMeetupsEntryURL.setParameter("redirect", currentURL);
-		addAssetURL.setParameter("struts_action", "/meetups/edit_entry");
-		// }
-		return addAssetURL;
+		} catch (PortalException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return portletURL;
 	}
 
 	/*
