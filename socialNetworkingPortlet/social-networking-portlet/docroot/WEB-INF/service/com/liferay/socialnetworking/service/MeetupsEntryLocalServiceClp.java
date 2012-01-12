@@ -559,6 +559,40 @@ public class MeetupsEntryLocalServiceClp implements MeetupsEntryLocalService {
 		}
 	}
 
+	public com.liferay.socialnetworking.model.MeetupsEntry updateStatus(
+		long userId, long classPK, int status,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		MethodHandler methodHandler = new MethodHandler(_updateStatusMethodKey18,
+				userId, classPK, status, serviceContext);
+
+		try {
+			returnObj = _classLoaderProxy.invoke(methodHandler);
+		}
+		catch (Throwable t) {
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.socialnetworking.model.MeetupsEntry)ClpSerializer.translateOutput(returnObj);
+	}
+
 	public ClassLoaderProxy getClassLoaderProxy() {
 		return _classLoaderProxy;
 	}
@@ -620,4 +654,7 @@ public class MeetupsEntryLocalServiceClp implements MeetupsEntryLocalService {
 			"updateAsset", long.class,
 			com.liferay.socialnetworking.model.MeetupsEntry.class,
 			long[].class, java.lang.String[].class);
+	private MethodKey _updateStatusMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+			"updateStatus", long.class, long.class, int.class,
+			com.liferay.portal.service.ServiceContext.class);
 }

@@ -54,6 +54,7 @@
 		<friendly-url-mapping>meetups</friendly-url-mapping>
 		<friendly-url-routes>com/liferay/socialnetworking/meetups/portlet/meetups-friendly-url-routes.xml</friendly-url-routes>
 		<asset-renderer-factory>com.liferay.socialnetworking.meetups.asset.MeetupsEntryAssetRendererFactory</asset-renderer-factory>
+		<workflow-handler>com.liferay.socialnetworking.meetups.cognito.util.MeetupsWorkflowHandler</workflow-handler>
 		<header-portlet-css>/meetups/css/main.css</header-portlet-css>
 		<css-class-wrapper>social-networking-portlet-meetups</css-class-wrapper>
 		<add-default-resource>true</add-default-resource>

@@ -13,6 +13,13 @@ create table SN_MeetupsEntry (
 	maxAttendees INTEGER,
 	price DOUBLE,
 	thumbnailId LONG,
+	version INTEGER,
+	content VARCHAR(75) null,
+	priority INTEGER,
+	status INTEGER,
+	statusByUserId LONG,
+	statusByUserName VARCHAR(75) null,
+	statusDate DATE null,
 	groupId LONG
 );
 

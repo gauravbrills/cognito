@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.util.PortalUtil;
 
@@ -167,12 +168,113 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 		_thumbnailId = thumbnailId;
 	}
 
+	public int getVersion() {
+		return _version;
+	}
+
+	public void setVersion(int version) {
+		_version = version;
+	}
+
+	public String getContent() {
+		return _content;
+	}
+
+	public void setContent(String content) {
+		_content = content;
+	}
+
+	public int getPriority() {
+		return _priority;
+	}
+
+	public void setPriority(int priority) {
+		_priority = priority;
+	}
+
+	public int getStatus() {
+		return _status;
+	}
+
+	public void setStatus(int status) {
+		_status = status;
+	}
+
+	public long getStatusByUserId() {
+		return _statusByUserId;
+	}
+
+	public void setStatusByUserId(long statusByUserId) {
+		_statusByUserId = statusByUserId;
+	}
+
+	public String getStatusByUserUuid() throws SystemException {
+		return PortalUtil.getUserValue(getStatusByUserId(), "uuid",
+			_statusByUserUuid);
+	}
+
+	public void setStatusByUserUuid(String statusByUserUuid) {
+		_statusByUserUuid = statusByUserUuid;
+	}
+
+	public String getStatusByUserName() {
+		return _statusByUserName;
+	}
+
+	public void setStatusByUserName(String statusByUserName) {
+		_statusByUserName = statusByUserName;
+	}
+
+	public Date getStatusDate() {
+		return _statusDate;
+	}
+
+	public void setStatusDate(Date statusDate) {
+		_statusDate = statusDate;
+	}
+
 	public long getGroupId() {
 		return _groupId;
 	}
 
 	public void setGroupId(long groupId) {
 		_groupId = groupId;
+	}
+
+	public boolean isApproved() {
+		if (getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean isDraft() {
+		if (getStatus() == WorkflowConstants.STATUS_DRAFT) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean isExpired() {
+		if (getStatus() == WorkflowConstants.STATUS_EXPIRED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean isPending() {
+		if (getStatus() == WorkflowConstants.STATUS_PENDING) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public MeetupsEntry toEscapedModel() {
@@ -203,6 +305,13 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 		clone.setMaxAttendees(getMaxAttendees());
 		clone.setPrice(getPrice());
 		clone.setThumbnailId(getThumbnailId());
+		clone.setVersion(getVersion());
+		clone.setContent(getContent());
+		clone.setPriority(getPriority());
+		clone.setStatus(getStatus());
+		clone.setStatusByUserId(getStatusByUserId());
+		clone.setStatusByUserName(getStatusByUserName());
+		clone.setStatusDate(getStatusDate());
 		clone.setGroupId(getGroupId());
 
 		return clone;
@@ -251,7 +360,7 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 	}
 
 	public String toString() {
-		StringBundler sb = new StringBundler(31);
+		StringBundler sb = new StringBundler(45);
 
 		sb.append("{meetupsEntryId=");
 		sb.append(getMeetupsEntryId());
@@ -281,6 +390,20 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 		sb.append(getPrice());
 		sb.append(", thumbnailId=");
 		sb.append(getThumbnailId());
+		sb.append(", version=");
+		sb.append(getVersion());
+		sb.append(", content=");
+		sb.append(getContent());
+		sb.append(", priority=");
+		sb.append(getPriority());
+		sb.append(", status=");
+		sb.append(getStatus());
+		sb.append(", statusByUserId=");
+		sb.append(getStatusByUserId());
+		sb.append(", statusByUserName=");
+		sb.append(getStatusByUserName());
+		sb.append(", statusDate=");
+		sb.append(getStatusDate());
 		sb.append(", groupId=");
 		sb.append(getGroupId());
 		sb.append("}");
@@ -289,7 +412,7 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(49);
+		StringBundler sb = new StringBundler(70);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.socialnetworking.model.MeetupsEntry");
@@ -352,6 +475,34 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 		sb.append(getThumbnailId());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>version</column-name><column-value><![CDATA[");
+		sb.append(getVersion());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>content</column-name><column-value><![CDATA[");
+		sb.append(getContent());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>priority</column-name><column-value><![CDATA[");
+		sb.append(getPriority());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>status</column-name><column-value><![CDATA[");
+		sb.append(getStatus());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
+		sb.append(getStatusByUserId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
+		sb.append(getStatusByUserName());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>statusDate</column-name><column-value><![CDATA[");
+		sb.append(getStatusDate());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>groupId</column-name><column-value><![CDATA[");
 		sb.append(getGroupId());
 		sb.append("]]></column-value></column>");
@@ -376,5 +527,13 @@ public class MeetupsEntryClp extends BaseModelImpl<MeetupsEntry>
 	private int _maxAttendees;
 	private double _price;
 	private long _thumbnailId;
+	private int _version;
+	private String _content;
+	private int _priority;
+	private int _status;
+	private long _statusByUserId;
+	private String _statusByUserUuid;
+	private String _statusByUserName;
+	private Date _statusDate;
 	private long _groupId;
 }

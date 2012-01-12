@@ -31,8 +31,18 @@
 			<basic name="maxAttendees" />
 			<basic name="price" />
 			<basic name="thumbnailId" />
+			<basic name="version" />
+			<basic name="content" />
+			<basic name="priority" />
+			<basic name="status" />
+			<basic name="statusByUserId" />
+			<basic name="statusByUserName" />
+			<basic name="statusDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
 			<basic name="groupId" />
 			<transient name="primaryKey" />
+			<transient name="statusByUserUuid" />
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>

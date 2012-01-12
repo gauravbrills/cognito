@@ -157,12 +157,93 @@ public class MeetupsEntryWrapper implements MeetupsEntry {
 		_meetupsEntry.setThumbnailId(thumbnailId);
 	}
 
+	public int getVersion() {
+		return _meetupsEntry.getVersion();
+	}
+
+	public void setVersion(int version) {
+		_meetupsEntry.setVersion(version);
+	}
+
+	public java.lang.String getContent() {
+		return _meetupsEntry.getContent();
+	}
+
+	public void setContent(java.lang.String content) {
+		_meetupsEntry.setContent(content);
+	}
+
+	public int getPriority() {
+		return _meetupsEntry.getPriority();
+	}
+
+	public void setPriority(int priority) {
+		_meetupsEntry.setPriority(priority);
+	}
+
+	public int getStatus() {
+		return _meetupsEntry.getStatus();
+	}
+
+	public void setStatus(int status) {
+		_meetupsEntry.setStatus(status);
+	}
+
+	public long getStatusByUserId() {
+		return _meetupsEntry.getStatusByUserId();
+	}
+
+	public void setStatusByUserId(long statusByUserId) {
+		_meetupsEntry.setStatusByUserId(statusByUserId);
+	}
+
+	public java.lang.String getStatusByUserUuid()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _meetupsEntry.getStatusByUserUuid();
+	}
+
+	public void setStatusByUserUuid(java.lang.String statusByUserUuid) {
+		_meetupsEntry.setStatusByUserUuid(statusByUserUuid);
+	}
+
+	public java.lang.String getStatusByUserName() {
+		return _meetupsEntry.getStatusByUserName();
+	}
+
+	public void setStatusByUserName(java.lang.String statusByUserName) {
+		_meetupsEntry.setStatusByUserName(statusByUserName);
+	}
+
+	public java.util.Date getStatusDate() {
+		return _meetupsEntry.getStatusDate();
+	}
+
+	public void setStatusDate(java.util.Date statusDate) {
+		_meetupsEntry.setStatusDate(statusDate);
+	}
+
 	public long getGroupId() {
 		return _meetupsEntry.getGroupId();
 	}
 
 	public void setGroupId(long groupId) {
 		_meetupsEntry.setGroupId(groupId);
+	}
+
+	public boolean isApproved() {
+		return _meetupsEntry.isApproved();
+	}
+
+	public boolean isDraft() {
+		return _meetupsEntry.isDraft();
+	}
+
+	public boolean isExpired() {
+		return _meetupsEntry.isExpired();
+	}
+
+	public boolean isPending() {
+		return _meetupsEntry.isPending();
 	}
 
 	public com.liferay.socialnetworking.model.MeetupsEntry toEscapedModel() {

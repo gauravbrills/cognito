@@ -281,6 +281,14 @@ public class MeetupsEntryLocalServiceUtil {
 			.updateAsset(userId, meetupsEntry, assetCategoryIds, assetTagNames);
 	}
 
+	public static com.liferay.socialnetworking.model.MeetupsEntry updateStatus(
+		long userId, long classPK, int status,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().updateStatus(userId, classPK, status, serviceContext);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

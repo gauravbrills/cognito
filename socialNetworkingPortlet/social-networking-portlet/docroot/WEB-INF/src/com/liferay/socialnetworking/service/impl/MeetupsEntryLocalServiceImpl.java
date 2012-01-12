@@ -22,10 +22,14 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.liferay.portlet.calendar.model.CalEvent;
 import com.liferay.portlet.expando.DuplicateColumnNameException;
 import com.liferay.portlet.expando.NoSuchTableException;
@@ -86,6 +90,8 @@ public class MeetupsEntryLocalServiceImpl extends
 		meetupsEntry.setMaxAttendees(maxAttendees);
 		meetupsEntry.setPrice(price);
 		meetupsEntry.setGroupId(serviceContext.getScopeGroupId());
+		// Set status as draft for workflow
+		meetupsEntry.setStatus(WorkflowConstants.STATUS_DRAFT);
 
 		if ((thumbnail != null) && (thumbnail.length > 0)) {
 			meetupsEntry.setThumbnailId(counterLocalService.increment());
@@ -123,11 +129,19 @@ public class MeetupsEntryLocalServiceImpl extends
 		updateAsset(userId, meetupsEntry, serviceContext.getAssetCategoryIds(),
 				serviceContext.getAssetTagNames());
 
-		// Indexer
+		/*
+		 * // Indexer
+		 * 
+		 * Indexer indexer = IndexerRegistryUtil.getIndexer(MeetupsEntry.class);
+		 * 
+		 * indexer.reindex(meetupsEntry);
+		 */
+		// Workflow
 
-		Indexer indexer = IndexerRegistryUtil.getIndexer(MeetupsEntry.class);
-
-		indexer.reindex(meetupsEntry);
+		WorkflowHandlerRegistryUtil.startWorkflowInstance(
+				meetupsEntry.getCompanyId(), meetupsEntry.getGroupId(), userId,
+				MeetupsEntry.class.getName(), meetupsEntry.getPrimaryKey(),
+				meetupsEntry, serviceContext);
 
 		return meetupsEntry;
 	}
@@ -309,4 +323,33 @@ public class MeetupsEntryLocalServiceImpl extends
 		}
 		return table;
 	}
+
+	public MeetupsEntry updateStatus(long userId, long classPK, int status,
+			ServiceContext serviceContext) throws SystemException,
+			PortalException {
+		User user = UserLocalServiceUtil.getUser(userId);
+		MeetupsEntry entry = MeetupsEntryLocalServiceUtil
+				.getMeetupsEntry(classPK);
+		entry.setStatus(status);
+		entry.setStatusByUserId(userId);
+		entry.setStatusByUserName(user.getFullName());
+		entry.setStatusDate(serviceContext.getModifiedDate());
+
+		MeetupsEntryLocalServiceUtil.updateMeetupsEntry(entry, false);
+
+		if (status != WorkflowConstants.STATUS_APPROVED) {
+			AssetEntryLocalServiceUtil.updateVisible(MeetupsEntry.class.getName(),
+					classPK, true);
+		} else
+			AssetEntryLocalServiceUtil.updateVisible(MeetupsEntry.class.getName(),
+					classPK, true);
+		// Indexer
+
+		Indexer indexer = IndexerRegistryUtil.getIndexer(MeetupsEntry.class);
+
+		indexer.reindex(entry);
+
+		return entry;
+	}
+
 }

@@ -18,6 +18,13 @@
 		<field name="maxAttendees" type="int" />
 		<field name="price" type="double" />
 		<field name="thumbnailId" type="long" />
+		<field name="version" type="int" />
+		<field name="content" type="String" />
+		<field name="priority" type="int" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
 		<field name="groupId" type="long" />
 	</model>
 	<model name="com.liferay.socialnetworking.model.MeetupsRegistration">

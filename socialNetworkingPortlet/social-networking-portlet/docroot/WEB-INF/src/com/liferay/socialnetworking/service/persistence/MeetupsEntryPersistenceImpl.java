@@ -74,6 +74,18 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 	public static final String FINDER_CLASS_NAME_ENTITY = MeetupsEntryImpl.class.getName();
 	public static final String FINDER_CLASS_NAME_LIST = FINDER_CLASS_NAME_ENTITY +
 		".List";
+	public static final FinderPath FINDER_PATH_FIND_BY_R_S = new FinderPath(MeetupsEntryModelImpl.ENTITY_CACHE_ENABLED,
+			MeetupsEntryModelImpl.FINDER_CACHE_ENABLED, FINDER_CLASS_NAME_LIST,
+			"findByR_S",
+			new String[] {
+				Integer.class.getName(),
+				
+			"java.lang.Integer", "java.lang.Integer",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			});
+	public static final FinderPath FINDER_PATH_COUNT_BY_R_S = new FinderPath(MeetupsEntryModelImpl.ENTITY_CACHE_ENABLED,
+			MeetupsEntryModelImpl.FINDER_CACHE_ENABLED, FINDER_CLASS_NAME_LIST,
+			"countByR_S", new String[] { Integer.class.getName() });
 	public static final FinderPath FINDER_PATH_FIND_BY_COMPANYID = new FinderPath(MeetupsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			MeetupsEntryModelImpl.FINDER_CACHE_ENABLED, FINDER_CLASS_NAME_LIST,
 			"findByCompanyId",
@@ -305,6 +317,13 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 		meetupsEntryImpl.setMaxAttendees(meetupsEntry.getMaxAttendees());
 		meetupsEntryImpl.setPrice(meetupsEntry.getPrice());
 		meetupsEntryImpl.setThumbnailId(meetupsEntry.getThumbnailId());
+		meetupsEntryImpl.setVersion(meetupsEntry.getVersion());
+		meetupsEntryImpl.setContent(meetupsEntry.getContent());
+		meetupsEntryImpl.setPriority(meetupsEntry.getPriority());
+		meetupsEntryImpl.setStatus(meetupsEntry.getStatus());
+		meetupsEntryImpl.setStatusByUserId(meetupsEntry.getStatusByUserId());
+		meetupsEntryImpl.setStatusByUserName(meetupsEntry.getStatusByUserName());
+		meetupsEntryImpl.setStatusDate(meetupsEntry.getStatusDate());
 		meetupsEntryImpl.setGroupId(meetupsEntry.getGroupId());
 
 		return meetupsEntryImpl;
@@ -393,6 +412,344 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 		}
 
 		return meetupsEntry;
+	}
+
+	/**
+	 * Finds all the meetups entries where status = &#63;.
+	 *
+	 * @param status the status to search with
+	 * @return the matching meetups entries
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<MeetupsEntry> findByR_S(int status) throws SystemException {
+		return findByR_S(status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Finds a range of all the meetups entries where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param status the status to search with
+	 * @param start the lower bound of the range of meetups entries to return
+	 * @param end the upper bound of the range of meetups entries to return (not inclusive)
+	 * @return the range of matching meetups entries
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<MeetupsEntry> findByR_S(int status, int start, int end)
+		throws SystemException {
+		return findByR_S(status, start, end, null);
+	}
+
+	/**
+	 * Finds an ordered range of all the meetups entries where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param status the status to search with
+	 * @param start the lower bound of the range of meetups entries to return
+	 * @param end the upper bound of the range of meetups entries to return (not inclusive)
+	 * @param orderByComparator the comparator to order the results by
+	 * @return the ordered range of matching meetups entries
+	 * @throws SystemException if a system exception occurred
+	 */
+	public List<MeetupsEntry> findByR_S(int status, int start, int end,
+		OrderByComparator orderByComparator) throws SystemException {
+		Object[] finderArgs = new Object[] {
+				status,
+				
+				String.valueOf(start), String.valueOf(end),
+				String.valueOf(orderByComparator)
+			};
+
+		List<MeetupsEntry> list = (List<MeetupsEntry>)FinderCacheUtil.getResult(FINDER_PATH_FIND_BY_R_S,
+				finderArgs, this);
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 3));
+			}
+			else {
+				query = new StringBundler(3);
+			}
+
+			query.append(_SQL_SELECT_MEETUPSENTRY_WHERE);
+
+			query.append(_FINDER_COLUMN_R_S_STATUS_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+
+			else {
+				query.append(MeetupsEntryModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(status);
+
+				list = (List<MeetupsEntry>)QueryUtil.list(q, getDialect(),
+						start, end);
+			}
+			catch (Exception e) {
+				throw processException(e);
+			}
+			finally {
+				if (list == null) {
+					FinderCacheUtil.removeResult(FINDER_PATH_FIND_BY_R_S,
+						finderArgs);
+				}
+				else {
+					cacheResult(list);
+
+					FinderCacheUtil.putResult(FINDER_PATH_FIND_BY_R_S,
+						finderArgs, list);
+				}
+
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Finds the first meetups entry in the ordered set where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param status the status to search with
+	 * @param orderByComparator the comparator to order the set by
+	 * @return the first matching meetups entry
+	 * @throws com.liferay.socialnetworking.NoSuchMeetupsEntryException if a matching meetups entry could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public MeetupsEntry findByR_S_First(int status,
+		OrderByComparator orderByComparator)
+		throws NoSuchMeetupsEntryException, SystemException {
+		List<MeetupsEntry> list = findByR_S(status, 0, 1, orderByComparator);
+
+		if (list.isEmpty()) {
+			StringBundler msg = new StringBundler(4);
+
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			msg.append("status=");
+			msg.append(status);
+
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+			throw new NoSuchMeetupsEntryException(msg.toString());
+		}
+		else {
+			return list.get(0);
+		}
+	}
+
+	/**
+	 * Finds the last meetups entry in the ordered set where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param status the status to search with
+	 * @param orderByComparator the comparator to order the set by
+	 * @return the last matching meetups entry
+	 * @throws com.liferay.socialnetworking.NoSuchMeetupsEntryException if a matching meetups entry could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public MeetupsEntry findByR_S_Last(int status,
+		OrderByComparator orderByComparator)
+		throws NoSuchMeetupsEntryException, SystemException {
+		int count = countByR_S(status);
+
+		List<MeetupsEntry> list = findByR_S(status, count - 1, count,
+				orderByComparator);
+
+		if (list.isEmpty()) {
+			StringBundler msg = new StringBundler(4);
+
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			msg.append("status=");
+			msg.append(status);
+
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+			throw new NoSuchMeetupsEntryException(msg.toString());
+		}
+		else {
+			return list.get(0);
+		}
+	}
+
+	/**
+	 * Finds the meetups entries before and after the current meetups entry in the ordered set where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * </p>
+	 *
+	 * @param meetupsEntryId the primary key of the current meetups entry
+	 * @param status the status to search with
+	 * @param orderByComparator the comparator to order the set by
+	 * @return the previous, current, and next meetups entry
+	 * @throws com.liferay.socialnetworking.NoSuchMeetupsEntryException if a meetups entry with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public MeetupsEntry[] findByR_S_PrevAndNext(long meetupsEntryId,
+		int status, OrderByComparator orderByComparator)
+		throws NoSuchMeetupsEntryException, SystemException {
+		MeetupsEntry meetupsEntry = findByPrimaryKey(meetupsEntryId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			MeetupsEntry[] array = new MeetupsEntryImpl[3];
+
+			array[0] = getByR_S_PrevAndNext(session, meetupsEntry, status,
+					orderByComparator, true);
+
+			array[1] = meetupsEntry;
+
+			array[2] = getByR_S_PrevAndNext(session, meetupsEntry, status,
+					orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected MeetupsEntry getByR_S_PrevAndNext(Session session,
+		MeetupsEntry meetupsEntry, int status,
+		OrderByComparator orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByFields().length * 6));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		query.append(_SQL_SELECT_MEETUPSENTRY_WHERE);
+
+		query.append(_FINDER_COLUMN_R_S_STATUS_2);
+
+		if (orderByComparator != null) {
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			if (orderByFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+
+		else {
+			query.append(MeetupsEntryModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(status);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByValues(meetupsEntry);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<MeetupsEntry> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
 	}
 
 	/**
@@ -1185,6 +1542,18 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 	}
 
 	/**
+	 * Removes all the meetups entries where status = &#63; from the database.
+	 *
+	 * @param status the status to search with
+	 * @throws SystemException if a system exception occurred
+	 */
+	public void removeByR_S(int status) throws SystemException {
+		for (MeetupsEntry meetupsEntry : findByR_S(status)) {
+			remove(meetupsEntry);
+		}
+	}
+
+	/**
 	 * Removes all the meetups entries where companyId = &#63; from the database.
 	 *
 	 * @param companyId the company id to search with
@@ -1217,6 +1586,59 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 		for (MeetupsEntry meetupsEntry : findAll()) {
 			remove(meetupsEntry);
 		}
+	}
+
+	/**
+	 * Counts all the meetups entries where status = &#63;.
+	 *
+	 * @param status the status to search with
+	 * @return the number of matching meetups entries
+	 * @throws SystemException if a system exception occurred
+	 */
+	public int countByR_S(int status) throws SystemException {
+		Object[] finderArgs = new Object[] { status };
+
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_R_S,
+				finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_MEETUPSENTRY_WHERE);
+
+			query.append(_FINDER_COLUMN_R_S_STATUS_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(status);
+
+				count = (Long)q.uniqueResult();
+			}
+			catch (Exception e) {
+				throw processException(e);
+			}
+			finally {
+				if (count == null) {
+					count = Long.valueOf(0);
+				}
+
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_R_S, finderArgs,
+					count);
+
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
 	}
 
 	/**
@@ -1414,6 +1836,7 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 	private static final String _SQL_SELECT_MEETUPSENTRY_WHERE = "SELECT meetupsEntry FROM MeetupsEntry meetupsEntry WHERE ";
 	private static final String _SQL_COUNT_MEETUPSENTRY = "SELECT COUNT(meetupsEntry) FROM MeetupsEntry meetupsEntry";
 	private static final String _SQL_COUNT_MEETUPSENTRY_WHERE = "SELECT COUNT(meetupsEntry) FROM MeetupsEntry meetupsEntry WHERE ";
+	private static final String _FINDER_COLUMN_R_S_STATUS_2 = "meetupsEntry.status = ?";
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 = "meetupsEntry.companyId = ?";
 	private static final String _FINDER_COLUMN_USERID_USERID_2 = "meetupsEntry.userId = ?";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "meetupsEntry.";

@@ -272,6 +272,121 @@ public interface MeetupsEntryModel extends BaseModel<MeetupsEntry> {
 	public void setThumbnailId(long thumbnailId);
 
 	/**
+	 * Gets the version of this meetups entry.
+	 *
+	 * @return the version of this meetups entry
+	 */
+	public int getVersion();
+
+	/**
+	 * Sets the version of this meetups entry.
+	 *
+	 * @param version the version of this meetups entry
+	 */
+	public void setVersion(int version);
+
+	/**
+	 * Gets the content of this meetups entry.
+	 *
+	 * @return the content of this meetups entry
+	 */
+	@AutoEscape
+	public String getContent();
+
+	/**
+	 * Sets the content of this meetups entry.
+	 *
+	 * @param content the content of this meetups entry
+	 */
+	public void setContent(String content);
+
+	/**
+	 * Gets the priority of this meetups entry.
+	 *
+	 * @return the priority of this meetups entry
+	 */
+	public int getPriority();
+
+	/**
+	 * Sets the priority of this meetups entry.
+	 *
+	 * @param priority the priority of this meetups entry
+	 */
+	public void setPriority(int priority);
+
+	/**
+	 * Gets the status of this meetups entry.
+	 *
+	 * @return the status of this meetups entry
+	 */
+	public int getStatus();
+
+	/**
+	 * Sets the status of this meetups entry.
+	 *
+	 * @param status the status of this meetups entry
+	 */
+	public void setStatus(int status);
+
+	/**
+	 * Gets the status by user id of this meetups entry.
+	 *
+	 * @return the status by user id of this meetups entry
+	 */
+	public long getStatusByUserId();
+
+	/**
+	 * Sets the status by user id of this meetups entry.
+	 *
+	 * @param statusByUserId the status by user id of this meetups entry
+	 */
+	public void setStatusByUserId(long statusByUserId);
+
+	/**
+	 * Gets the status by user uuid of this meetups entry.
+	 *
+	 * @return the status by user uuid of this meetups entry
+	 * @throws SystemException if a system exception occurred
+	 */
+	public String getStatusByUserUuid() throws SystemException;
+
+	/**
+	 * Sets the status by user uuid of this meetups entry.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this meetups entry
+	 */
+	public void setStatusByUserUuid(String statusByUserUuid);
+
+	/**
+	 * Gets the status by user name of this meetups entry.
+	 *
+	 * @return the status by user name of this meetups entry
+	 */
+	@AutoEscape
+	public String getStatusByUserName();
+
+	/**
+	 * Sets the status by user name of this meetups entry.
+	 *
+	 * @param statusByUserName the status by user name of this meetups entry
+	 */
+	public void setStatusByUserName(String statusByUserName);
+
+	/**
+	 * Gets the status date of this meetups entry.
+	 *
+	 * @return the status date of this meetups entry
+	 */
+	public Date getStatusDate();
+
+	/**
+	 * Sets the status date of this meetups entry.
+	 *
+	 * @param statusDate the status date of this meetups entry
+	 */
+	public void setStatusDate(Date statusDate);
+
+	/**
 	 * Gets the group id of this meetups entry.
 	 *
 	 * @return the group id of this meetups entry
@@ -284,6 +399,34 @@ public interface MeetupsEntryModel extends BaseModel<MeetupsEntry> {
 	 * @param groupId the group id of this meetups entry
 	 */
 	public void setGroupId(long groupId);
+
+	/**
+	 * Determines if this meetups entry is approved.
+	 *
+	 * @return <code>true</code> if this meetups entry is approved; <code>false</code> otherwise
+	 */
+	public boolean isApproved();
+
+	/**
+	 * Determines if this meetups entry is a draft.
+	 *
+	 * @return <code>true</code> if this meetups entry is a draft; <code>false</code> otherwise
+	 */
+	public boolean isDraft();
+
+	/**
+	 * Determines if this meetups entry is expired.
+	 *
+	 * @return <code>true</code> if this meetups entry is expired; <code>false</code> otherwise
+	 */
+	public boolean isExpired();
+
+	/**
+	 * Determines if this meetups entry is pending.
+	 *
+	 * @return <code>true</code> if this meetups entry is pending; <code>false</code> otherwise
+	 */
+	public boolean isPending();
 
 	/**
 	 * Gets a copy of this meetups entry as an escaped model instance by wrapping it with an {@link com.liferay.portal.kernel.bean.AutoEscapeBeanHandler}.

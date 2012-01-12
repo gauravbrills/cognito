@@ -1,4 +1,6 @@
 create index IX_A56E51DD on SN_MeetupsEntry (companyId);
+create index IX_A124D221 on SN_MeetupsEntry (meetupsEntryId, status);
+create index IX_CD2AD551 on SN_MeetupsEntry (status);
 create index IX_6EA9EEA5 on SN_MeetupsEntry (userId);
 
 create index IX_A79293FC on SN_MeetupsRegistration (meetupsEntryId);

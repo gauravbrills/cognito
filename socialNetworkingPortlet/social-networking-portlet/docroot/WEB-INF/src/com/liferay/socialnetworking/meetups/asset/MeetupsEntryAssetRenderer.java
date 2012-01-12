@@ -144,7 +144,7 @@ public class MeetupsEntryAssetRenderer extends BaseAssetRenderer {
 	@Override
 	public long getGroupId() {
 		// TODO Auto-generated method stub
-		return 10165;
+		return _entry.getGroupId();
 	}
 
 }

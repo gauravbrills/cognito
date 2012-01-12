@@ -274,6 +274,15 @@ public class MeetupsEntryLocalServiceWrapper implements MeetupsEntryLocalService
 			assetCategoryIds, assetTagNames);
 	}
 
+	public com.liferay.socialnetworking.model.MeetupsEntry updateStatus(
+		long userId, long classPK, int status,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _meetupsEntryLocalService.updateStatus(userId, classPK, status,
+			serviceContext);
+	}
+
 	public MeetupsEntryLocalService getWrappedMeetupsEntryLocalService() {
 		return _meetupsEntryLocalService;
 	}
